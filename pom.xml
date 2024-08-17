@@ -8,8 +8,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>flink-connectors</module>
-        <module>kafka-clients</module>
         <module>flink-hello-world</module>
+        <module>spark-hello-world</module>
+        <module>kafka-clients</module>
     </modules>
 
     <properties>
