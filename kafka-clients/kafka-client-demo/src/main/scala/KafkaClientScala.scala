@@ -7,7 +7,7 @@ import org.apache.kafka.common.serialization.{StringDeserializer, StringSerializ
 import java.util.Properties
 import scala.collection.JavaConverters._
 
-object KafkaClientDemo extends App with EmbeddedKafka {
+object KafkaClientScala extends App with EmbeddedKafka {
 
   // Kafka topic
   val topic = "test"

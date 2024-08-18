@@ -5,7 +5,7 @@ import org.apache.kafka.common.KafkaFuture
 import java.util.Properties
 import scala.jdk.CollectionConverters._
 
-object KafkaListTopicsDemo extends App with EmbeddedKafka {
+object KafkaListTopicsScala extends App with EmbeddedKafka {
 
   // Define Kafka configuration
   val kafkaConfig = EmbeddedKafkaConfig(

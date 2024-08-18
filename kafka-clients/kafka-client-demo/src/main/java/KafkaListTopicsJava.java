@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-public class KafkaListTopics {
+public class KafkaListTopicsJava {
 
     public static void main(String[] args) {
         EmbeddedKafkaConfig kafkaConfig = EmbeddedKafkaConfig.defaultConfig();
