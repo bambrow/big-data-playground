@@ -6,6 +6,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
+// input union
 public class FlinkInputUnionDemo {
     public static void main(String[] args) throws Exception {
         // Set up the execution environment
@@ -15,10 +16,12 @@ public class FlinkInputUnionDemo {
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
 
         // Get input data from port 9999
-        DataStream<String> text1 = env.socketTextStream("localhost", 9999);
+        // DataStream<String> text1 = env.socketTextStream("localhost", 9999);
+        DataStream<String> text1 = env.addSource(new RandomCharSource());
 
         // Get input data from port 9998
-        DataStream<String> text2 = env.socketTextStream("localhost", 9998);
+        // DataStream<String> text2 = env.socketTextStream("localhost", 9998);
+        DataStream<String> text2 = env.addSource(new RandomCharSource());
 
         // Combine the two streams
         DataStream<String> text = text1.union(text2);

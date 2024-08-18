@@ -11,6 +11,8 @@
         <module>flink-hello-world</module>
         <module>spark-hello-world</module>
         <module>kafka-clients</module>
+        <module>data-formats-demo</module>
+        <module>zookeeper-clients</module>
     </modules>
 
     <properties>

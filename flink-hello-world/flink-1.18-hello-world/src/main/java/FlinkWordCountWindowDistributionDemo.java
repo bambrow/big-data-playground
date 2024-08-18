@@ -12,6 +12,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import java.util.HashMap;
 import java.util.Map;
 
+// word count with 5-second window and percentage across all windows
 public class FlinkWordCountWindowDistributionDemo {
 
     public static void main(String[] args) throws Exception {
@@ -23,7 +24,8 @@ public class FlinkWordCountWindowDistributionDemo {
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
 
         // Get input data
-        DataStream<String> text = env.socketTextStream("localhost", 9999);
+        // DataStream<String> text = env.socketTextStream("localhost", 9999);
+        DataStream<String> text = env.addSource(new RandomCharsSource());
 
         // Split up the lines into words, count them within 5-second windows, and print
         DataStream<Tuple3<String, Integer, Double>> counts = text

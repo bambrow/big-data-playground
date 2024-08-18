@@ -5,22 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.bambrow</groupId>
-        <artifactId>big-data-playground</artifactId>
+        <artifactId>data-formats-demo</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flink-hello-world</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>flink-1.18-hello-world</module>
-        <module>flink-fraud-detection</module>
-        <module>flink-1.18-batch-mode</module>
-    </modules>
+    <artifactId>data-avro-demo</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-tools</artifactId>
+            <version>1.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>1.10.2</version>
+        </dependency>
+    </dependencies>
 
 </project>

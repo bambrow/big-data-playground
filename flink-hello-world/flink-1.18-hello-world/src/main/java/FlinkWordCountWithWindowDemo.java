@@ -6,6 +6,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 
+// word count with 5-second windows
 public class FlinkWordCountWithWindowDemo {
 
     public static void main(String[] args) throws Exception {
@@ -17,7 +18,8 @@ public class FlinkWordCountWithWindowDemo {
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
 
         // Get input data
-        DataStream<String> text = env.socketTextStream("localhost", 9999);
+        // DataStream<String> text = env.socketTextStream("localhost", 9999);
+        DataStream<String> text = env.addSource(new RandomCharSource());
 
         // Split up the lines into words, count them within 5-second windows, and print
         DataStream<Tuple2<String, Integer>> counts = text

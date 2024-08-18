@@ -4,6 +4,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
+// basic word count
 public class FlinkWordCountDemo {
 
     public static void main(String[] args) throws Exception {
@@ -12,7 +13,8 @@ public class FlinkWordCountDemo {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // Get input data
-        DataStream<String> text = env.socketTextStream("localhost", 9999);
+        // DataStream<String> text = env.socketTextStream("localhost", 9999);
+        DataStream<String> text = env.addSource(new RandomCharSource());
 
         // Split up the lines into words, count them, and print
         DataStream<Tuple2<String, Integer>> counts = text

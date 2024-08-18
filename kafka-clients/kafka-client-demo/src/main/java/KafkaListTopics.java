@@ -1,28 +1,54 @@
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.PartitionInfo;
+import io.github.embeddedkafka.EmbeddedKafka;
+import io.github.embeddedkafka.EmbeddedKafkaConfig;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.ListTopicsResult;
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.common.KafkaFuture;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class KafkaListTopics {
+
     public static void main(String[] args) {
-        Map<String, List<PartitionInfo>> topics;
+        EmbeddedKafkaConfig kafkaConfig = EmbeddedKafkaConfig.defaultConfig();
 
-        Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
-        props.put("group.id", "test-group");
-        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        // Start Embedded Kafka
+        try {
+            EmbeddedKafka.start(kafkaConfig);
+            // Create AdminClient for interacting with Kafka
+            Properties adminClientConfig = new Properties();
+            adminClientConfig.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:" + kafkaConfig.kafkaPort());
 
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        topics = consumer.listTopics();
-        System.out.println("list of topic size: " + topics.size());
+            try (AdminClient adminClient = AdminClient.create(adminClientConfig)) {
+                // Define topics to be created
+                String[] topics = {"topic1", "topic2", "topic3"};
 
-        for (String topic : topics.keySet()){
-            System.out.println("topic name: " + topic);
+                // Create topics
+                for (String topic : topics) {
+                    NewTopic newTopic = new NewTopic(topic, 1, (short) 1);
+                    adminClient.createTopics(Collections.singleton(newTopic)).all().get(); // Ensure topic is created
+                }
+
+                // List topics
+                ListTopicsResult listTopicsResult = adminClient.listTopics();
+                KafkaFuture<Set<String>> topicNamesFuture = listTopicsResult.names();
+                Set<String> topicsSet = topicNamesFuture.get();
+
+                // Print topic names
+                System.out.println("Topics available:");
+                topicsSet.forEach(System.out::println);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Ensure to stop the embedded Kafka instance
+            EmbeddedKafka.stop();
         }
-
-        consumer.close();
     }
 }

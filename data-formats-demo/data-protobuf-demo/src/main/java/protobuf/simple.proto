@@ -1,0 +1,10 @@
+package protobuf;
+option java_package = "protobuf";
+option java_outer_classname = "SimpleProto";
+
+message Simple {
+  required int32 id = 1;
+  optional string name = 2;
+}
+
+// protoc --java_out=.. simple.proto

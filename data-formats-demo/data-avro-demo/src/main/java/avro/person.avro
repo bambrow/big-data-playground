@@ -1,0 +1,23 @@
+{
+  "namespace": "avro",
+  "type": "record",
+  "name": "Person",
+  "fields": [
+    {"name": "name", "type": "string"},
+    {"name": "id",  "type": "int"},
+    {"name": "email", "type": ["string", "null"]},
+    {"name": "phone",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "PhoneNumber",
+          "fields": [
+            {"name": "number", "type": "string"},
+            {"name": "type", "type": ["int", "null"]}
+          ]
+        }
+      }
+    }
+  ]
+}

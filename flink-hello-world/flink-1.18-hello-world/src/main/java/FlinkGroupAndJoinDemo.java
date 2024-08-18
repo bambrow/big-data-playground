@@ -9,14 +9,17 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+// text1 join with text2 and output count with sum
 public class FlinkGroupAndJoinDemo {
     public static void main(String[] args) throws Exception {
         // Set up the execution environment
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // Get input data from two ports
-        DataStream<String> text1 = env.socketTextStream("localhost", 9999);
-        DataStream<String> text2 = env.socketTextStream("localhost", 9998);
+        // DataStream<String> text1 = env.socketTextStream("localhost", 9999);
+        // DataStream<String> text2 = env.socketTextStream("localhost", 9998);
+        DataStream<String> text1 = env.addSource(new RandomCharABCSource());
+        DataStream<String> text2 = env.addSource(new RandomCharABCSource());
 
         // Connect the two streams and apply a CoProcessFunction
         DataStream<Tuple3<String, Integer, Integer>> result = text1.connect(text2)

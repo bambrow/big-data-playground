@@ -13,14 +13,17 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
+// text1 join with text2 and output count with sum in 5-second windows
 public class FlinkGroupAndJoinWithWindowDemo {
     public static void main(String[] args) throws Exception {
         // Set up the execution environment
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         // Get input data from two ports
-        DataStream<String> text1 = env.socketTextStream("localhost", 9999);
-        DataStream<String> text2 = env.socketTextStream("localhost", 9998);
+        // DataStream<String> text1 = env.socketTextStream("localhost", 9999);
+        // DataStream<String> text2 = env.socketTextStream("localhost", 9998);
+        DataStream<String> text1 = env.addSource(new RandomCharABCSource());
+        DataStream<String> text2 = env.addSource(new RandomCharABCSource());
 
         // Map each input to a tuple with the string and a count of 1
         DataStream<Tuple3<String, Integer, Integer>> textLengths1 = text1
@@ -31,7 +34,7 @@ public class FlinkGroupAndJoinWithWindowDemo {
                     }
                 })
                 .keyBy(value -> value.f0)
-                .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
+                .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
                 .process(new CountFunction());
 
         DataStream<Tuple3<String, Integer, Integer>> textLengths2 = text2
@@ -42,7 +45,7 @@ public class FlinkGroupAndJoinWithWindowDemo {
                     }
                 })
                 .keyBy(value -> value.f0)
-                .window(TumblingProcessingTimeWindows.of(Time.seconds(10)))
+                .window(TumblingProcessingTimeWindows.of(Time.seconds(5)))
                 .process(new CountFunction());
 
         // Connect the two streams and apply a CoProcessFunction

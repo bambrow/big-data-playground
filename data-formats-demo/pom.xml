@@ -9,12 +9,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flink-hello-world</artifactId>
+    <artifactId>data-formats-demo</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>flink-1.18-hello-world</module>
-        <module>flink-fraud-detection</module>
-        <module>flink-1.18-batch-mode</module>
+        <module>data-protobuf-demo</module>
+        <module>data-avro-demo</module>
     </modules>
 
     <properties>
